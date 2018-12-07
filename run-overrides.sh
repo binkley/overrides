@@ -92,28 +92,12 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
-function greet-greenly {
-    $print "${pgreen}I am green.${preset}"
-}
-
-function -greet-greenly-help {
-    cat <<EOH
-It's good to be green.
-EOH
-}
-
-function where-am-i {
-    echo $pwd
-}
-
-function -where-am-i-help {
-    cat <<EOH
-It's good to know where you are.
-EOH
-}
-
 function db {
-    exec rlwrap java -cp /Users/boxley/.m2/repository/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar org.hsqldb.cmdline.SqlTool --rcFile ./.sqltool.rc
+    maven_repo="$(./mvnw -q -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
+    exec rlwrap java \
+        -cp "$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
+        org.hsqldb.cmdline.SqlTool \
+        --rcFile ./.sqltool.rc
 }
 
 function -db-help {
@@ -149,7 +133,7 @@ readonly print
 readonly verbose
 
 case $# in
-0 ) ;;
+0 ) -print-help ; exit 0 ;;
 * ) # TODO: This is ugly code
     cmd="$1"
     found=false
@@ -171,7 +155,5 @@ esac
 -setup-colors
 -maybe-debug
 readonly debug
-
-echo 'Try help, maybe?'
 
 "$@"
