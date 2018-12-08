@@ -93,8 +93,23 @@ function -format-help {
 }
 
 function db {
-    maven_repo="$(./mvnw -q -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
-    exec rlwrap java \
+    local quiet=-q
+    if $debug
+    then
+        quiet=
+    fi
+    local rlwrap=rlwrap
+    if ! which rlwrap >/dev/null 2>&1
+    then
+        rlwrap=
+    fi
+
+    local maven_repo="$(./mvnw $quiet -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
+    case "$(uname)" in
+    CYGWIN* | MINGW* ) maven_repo="$(cygpath -m "$maven_repo")" ;;
+    esac
+
+    exec $rlwrap java \
         -cp "$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
         --rcFile ./.sqltool.rc
