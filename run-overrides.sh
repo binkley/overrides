@@ -104,15 +104,23 @@ function db {
         rlwrap=
     fi
 
+    local sep=
     local maven_repo="$(./mvnw $quiet -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
     case "$(uname)" in
-    CYGWIN* | MINGW* ) maven_repo="$(cygpath -m "$maven_repo")" ;;
+    CYGWIN* | MINGW* )
+        maven_repo="$(cygpath -m "$maven_repo")"
+        sep=';'
+        ;;
+    * )
+        sep=':'
+        ;;
     esac
 
     exec $rlwrap java \
-        -cp "$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
+        -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
-        --rcFile ./.sqltool.rc
+        --rcFile ./.sqltool.rc \
+        overrides
 }
 
 function -db-help {

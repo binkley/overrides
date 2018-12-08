@@ -32,8 +32,8 @@
 
 # A personal Memory-Only (non-persistent) database.
 urlid overrides
-url jdbc:hsqldb:file:./target/overrides;shutdown=true
-username
+url jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true
+username SA
 password
 # When connecting directly to a file database like this, you should 
 # use the shutdown connection property like this to shut down the DB
