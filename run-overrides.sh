@@ -116,11 +116,26 @@ function db {
         ;;
     esac
 
-    exec $rlwrap java \
+    declare -a opts
+    declare -a args
+    for arg in "$@"
+    do
+        shift
+        case $arg in
+        -- ) break ;;
+        -* ) opts=(${opts[@]+"${opts[@]}"} "$arg") ;;
+        * ) args=(${args[@]+"${args[@]}"} "$arg") ;;
+        esac
+    done
+    args=(${args[@]+"${args[@]}"} "$@")
+
+    ${run-} $rlwrap java \
         -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
         --rcFile ./.sqltool.rc \
-        overrides
+        "${opts[@]}" \
+        overrides \
+        "${args[@]}"
 }
 
 function -db-help {
@@ -135,8 +150,6 @@ readonly tasks=($(declare -F | cut -d' ' -f3 | grep -v '^-' | sort))
 
 [[ -t 1 ]] && color=true || color=false
 let debug=0 || true
-print=echo
-pwd=pwd
 verbose=false
 while getopts :-: opt
 do
@@ -146,7 +159,7 @@ do
     no-color ) color=false ;;
     d | debug ) let ++debug ;;
     h | help ) -print-help ; exit 0 ;;
-    n | dry-run ) print="echo $print" pwd="echo $pwd" ;;
+    n | dry-run ) run=echo ;;
     v | verbose ) verbose=true ;;
     * ) -print-usage >&2 ; exit 2 ;;
     esac
