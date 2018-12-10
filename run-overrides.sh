@@ -92,7 +92,22 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
-function db {
+function db-migrate {
+    local quiet=-q
+    if $debug
+    then
+        quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
+    fi
+    ${run-} ./mvnw $quiet flyway:migrate
+}
+
+function -db-migrate-help {
+    cat <<EOH
+Runs database migrations.
+EOH
+}
+
+function db-shell {
     local quiet=-q
     if $debug
     then
@@ -138,9 +153,9 @@ function db {
         "${args[@]}"
 }
 
-function -db-help {
+function -db-shell-help {
     cat <<EOH
-Opens the DB in a command-line.
+Opens the DB in a command-line.  If available, uses 'rlwrap'.
 EOH
 }
 
