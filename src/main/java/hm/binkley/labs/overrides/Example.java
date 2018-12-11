@@ -1,14 +1,14 @@
 package hm.binkley.labs.overrides;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+@AllArgsConstructor
 @Data
-@RequiredArgsConstructor
 @Table("PUBLIC.p_Example")
 public final class Example {
     @Id
-    private final Long id;
+    private Long id;
+    private String name;
 }
