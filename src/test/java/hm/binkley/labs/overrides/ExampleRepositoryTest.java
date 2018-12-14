@@ -14,6 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ExampleRepositoryTest {
     @Autowired
     private ExampleRepository repository;
+    @Autowired
+    private ExampleWriteRepository writeRepository;
 
     @Test
     public void shouldRoundTrip() {
@@ -21,9 +23,12 @@ public class ExampleRepositoryTest {
 
         assertThat(found).isEmpty();
 
-        final Example saved = repository.save(new Example(null, "Bob"));
+        final ExampleWrite saved = writeRepository.save(new ExampleWrite(null, "Bob"));
 
         assertThat(repository.findById(saved.getId()))
-                .isEqualTo(Optional.of(saved));
+                .isEqualTo(Optional.of(Example.builder()
+                        .id(saved.getId())
+                        .name(saved.getName())
+                        .build()));
     }
 }
