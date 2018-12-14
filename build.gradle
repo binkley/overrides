@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven'
+    id 'org.flywaydb.flyway' version '5.2.4'
 }
 
 repositories {
@@ -35,8 +36,14 @@ dependencies {
 group = 'hm.binkley.labs'
 version = '0.0.1-SNAPSHOT'
 description = 'overrides'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+flyway {
+    url = 'jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true'
+    user = 'sa'
 }

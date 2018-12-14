@@ -1,1 +1,0 @@
-ALTER TABLE p_Example DROP COLUMN name;

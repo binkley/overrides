@@ -129,7 +129,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
                     <url>
-                        jdbc:hsqldb:file:${project.build.directory}/overrides;shutdown=true
+                        jdbc:hsqldb:file:${project.build.directory}/overrides;create=true;shutdown=true
                     </url>
                     <user>sa</user>
                 </configuration>
