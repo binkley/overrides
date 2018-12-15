@@ -173,7 +173,7 @@ function app-stop {
         quiet=''
     fi
 
-    $run curl -X POST $quiet http://localhost:8080/actuator/shutdown
+    $run curl -X POST $quiet $base_url/actuator/shutdown
 }
 
 function -app-stop-help {
@@ -191,7 +191,7 @@ base_url=http://localhost:8080
 let debug=0 || true
 run=''
 verbose=false
-while getopts :-: opt
+while getopts :cdhnu:v-: opt
 do
     [[ - == $opt ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
     case $opt in
