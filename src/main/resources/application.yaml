@@ -1,7 +1,6 @@
 logging:
   level:
     root: WARN
-    org.flywaydb: INFO
 
 management:
   endpoint:
@@ -15,3 +14,5 @@ management:
 spring:
   datasource:
     url: jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true
+  main:
+    banner-mode: 'off'
