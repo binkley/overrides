@@ -5,6 +5,8 @@ Demonstrate overrides from SQL into Spring Data
 ## Tech stack
 
 * Spring Boot 2.1
+* Spring Data JDBC (no JPA or Hibernate)
+* RESTful repositories
 * HSQLDB
 * Flyway
 
