@@ -7,7 +7,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @AllArgsConstructor
 @Data
-@Table("PUBLIC.p_Example")
+@Table("OVERRIDES.p_Example")
 public final class ExampleWrite {
     @Id
     private Long id;
