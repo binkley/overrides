@@ -1,3 +1,17 @@
 logging:
   level:
-    org.springframework: WARN
+    root: WARN
+    org.flywaydb: INFO
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  datasource:
+    url: jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true

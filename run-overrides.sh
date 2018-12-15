@@ -53,11 +53,16 @@ function -maybe-debug {
     1 ) debug=true ;;
     * ) debug=true ; set -x ;;
     esac
+
+    if $debug
+    then
+        verbose=true
+    fi
 }
 
 function -print-usage {
     cat <<EOU | $fmt
-Usage: $progname [-c|--color|--no-color] [-d|--debug] [-h|--help] [-n|--dry-run] [-v|--verbose] [${tasks[@]}]
+Usage: $progname [-c|--color|--no-color] [-d|--debug] [-h|--help] [-n|--dry-run] [-u|--base-url URL] [-v|--verbose] [${tasks[@]}]
 EOU
 }
 
@@ -67,12 +72,13 @@ function -print-help {
     cat <<EOH
 
 Flags:
-  -c, --color     Print in color
-      --no-color  Print without color
-  -d, --debug     Print debug output while running
-  -h, --help      Print help and exit normally
-  -n, --dry-run   Do nothing (dry run); echo actions
-  -v, --verbose   Verbose output
+  -c, --color          Print in color
+      --no-color       Print without color
+  -d, --debug          Print debug output while running
+  -h, --help           Print help and exit normally
+  -n, --dry-run        Do nothing (dry run); echo actions
+  -u, --base-url URL   Sets base URL for running app
+  -v, --verbose        Verbose output
 
 Tasks:
 EOH
@@ -94,10 +100,11 @@ function -format-help {
 
 function db-update {
     local quiet=-q
-    if $debug
+    if $verbose
     then
         quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
     fi
+
     ${run-} ./mvnw $quiet flyway:migrate
 }
 
@@ -109,7 +116,7 @@ EOH
 
 function db-shell {
     local quiet=-q
-    if $debug
+    if $verbose
     then
         quiet=
     fi
@@ -159,10 +166,27 @@ Opens the DB in a command-line.  If available, uses 'rlwrap'.
 EOH
 }
 
+function app-stop {
+    local quiet='-sSo /dev/null'
+    if $verbose
+    then
+        quiet=''
+    fi
+
+    ${run-} curl -X POST $quiet http://localhost:8080/actuator/shutdown
+}
+
+function -app-stop-help {
+    cat <<EOH
+Stops running app on $base_url.
+EOH
+}
+
 readonly tasks=($(declare -F | cut -d' ' -f3 | grep -v '^-' | sort))
 
 -setup-terminal
 
+base_url=http://localhost:8080
 [[ -t 1 ]] && color=true || color=false
 let debug=0 || true
 verbose=false
@@ -175,13 +199,13 @@ do
     d | debug ) let ++debug ;;
     h | help ) -print-help ; exit 0 ;;
     n | dry-run ) run=echo ;;
+    u | base-url ) base_url=$OPTARG ;;
     v | verbose ) verbose=true ;;
     * ) -print-usage >&2 ; exit 2 ;;
     esac
 done
 shift $((OPTIND - 1))
 readonly print
-readonly verbose
 
 case $# in
 0 ) -print-help ; exit 0 ;;
@@ -206,5 +230,6 @@ esac
 -setup-colors
 -maybe-debug
 readonly debug
+readonly verbose
 
 "$@"
