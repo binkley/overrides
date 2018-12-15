@@ -16,19 +16,31 @@ public class ExampleRepositoryTest {
     private ExampleRepository repository;
     @Autowired
     private ExampleWriteRepository writeRepository;
+    @Autowired
+    private ExampleOverrideWriteRepository overrideRepository;
 
     @Test
-    public void shouldRoundTrip() {
+    public void shouldOverride() {
         final Iterable<Example> found = repository.findAll();
 
         assertThat(found).isEmpty();
 
-        final ExampleWrite saved = writeRepository.save(new ExampleWrite(null, "Bob"));
+        final ExampleWrite bob
+                = writeRepository.save(new ExampleWrite(null, "Bob"));
+        final ExampleWrite nancy
+                = writeRepository.save(new ExampleWrite(null, "Nancy"));
+        final ExampleOverrideWrite fred
+                = overrideRepository.save(bob.withOverride("Fred"));
 
-        assertThat(repository.findById(saved.getId()))
+        assertThat(repository.findById(bob.getId()))
                 .isEqualTo(Optional.of(Example.builder()
-                        .id(saved.getId())
-                        .name(saved.getName())
+                        .id(bob.getId())
+                        .name(fred.getName())
+                        .build()));
+        assertThat(repository.findById(nancy.getId()))
+                .isEqualTo(Optional.of(Example.builder()
+                        .id(nancy.getId())
+                        .name(nancy.getName())
                         .build()));
     }
 }
