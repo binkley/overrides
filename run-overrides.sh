@@ -92,7 +92,7 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
-function db-migrate {
+function db-update {
     local quiet=-q
     if $debug
     then
@@ -101,9 +101,9 @@ function db-migrate {
     ${run-} ./mvnw $quiet flyway:migrate
 }
 
-function -db-migrate-help {
+function -db-update-help {
     cat <<EOH
-Runs database migrations.
+Updates database to current schema.
 EOH
 }
 
