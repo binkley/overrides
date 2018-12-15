@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @Builder
 @Data
-@Table("OVERRIDES.Example")
+@Table("OVERRIDES.Examples")
 public final class Example {
     @Id
     private Long id;

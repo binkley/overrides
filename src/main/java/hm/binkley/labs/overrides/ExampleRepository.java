@@ -1,6 +1,9 @@
 package hm.binkley.labs.overrides;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+@RepositoryRestResource
 interface ExampleRepository
-        extends PagingAndSortingRepository<Example, Long> {}
+        extends CrudRepository<Example, Long> {
+}
