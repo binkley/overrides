@@ -184,6 +184,22 @@ Opens the DB in a command-line.  If available, uses 'rlwrap'.
 EOH
 }
 
+function app {
+    local quiet=-q
+    if $verbose
+    then
+        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO -Dlogging.level.root=INFO'
+    fi
+
+    $run ./mvnw $quiet -Dspring.output.ansi.enabled=always spring-boot:run
+}
+
+function -app-help {
+    cat <<EOH
+Starts app on http://localhost:8081.
+EOH
+}
+
 function app-stop {
     local quiet='-sSo /dev/null'
     if $verbose
