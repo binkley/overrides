@@ -98,6 +98,24 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
+function db-reset {
+    local quiet=-q
+    if $verbose
+    then
+        quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
+    fi
+
+    $run ./mvnw $quiet clean
+
+    db-update
+}
+
+function -db-reset-help {
+    cat <<EOH
+Recreates database to current schema.
+EOH
+}
+
 function db-update {
     local quiet=-q
     if $verbose

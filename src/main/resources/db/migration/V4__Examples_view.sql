@@ -1,0 +1,3 @@
+CREATE VIEW OVERRIDES.Examples AS
+SELECT e.id, e.name
+FROM OVERRIDES.p_Examples e;
