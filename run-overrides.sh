@@ -105,7 +105,7 @@ function db-update {
         quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
     fi
 
-    ${run-} ./mvnw $quiet flyway:migrate
+    $run ./mvnw $quiet flyway:migrate
 }
 
 function -db-update-help {
@@ -151,7 +151,7 @@ function db-shell {
     done
     args=(${args[@]+"${args[@]}"} "$@")
 
-    ${run-} $rlwrap java \
+    $run $rlwrap java \
         -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
         --rcFile ./.sqltool.rc \
@@ -173,7 +173,7 @@ function app-stop {
         quiet=''
     fi
 
-    ${run-} curl -X POST $quiet http://localhost:8080/actuator/shutdown
+    $run curl -X POST $quiet http://localhost:8080/actuator/shutdown
 }
 
 function -app-stop-help {
@@ -189,6 +189,7 @@ readonly tasks=($(declare -F | cut -d' ' -f3 | grep -v '^-' | sort))
 base_url=http://localhost:8080
 [[ -t 1 ]] && color=true || color=false
 let debug=0 || true
+run=''
 verbose=false
 while getopts :-: opt
 do
@@ -205,7 +206,7 @@ do
     esac
 done
 shift $((OPTIND - 1))
-readonly print
+readonly run
 
 case $# in
 0 ) -print-help ; exit 0 ;;
