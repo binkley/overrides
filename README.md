@@ -9,6 +9,8 @@ Demonstrate overrides from SQL into Spring Data
 * RESTful repositories
 * HSQLDB
 * Flyway
+* Riot JS
+* Semantic UI CSS
 
 ## Command line
 
