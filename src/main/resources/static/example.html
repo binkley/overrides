@@ -10,27 +10,15 @@
 <my-tag></my-tag>
 <eg-tag></eg-tag>
 <!--<script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>-->
-<script type="riot/tag">
-  <my-tag>
-    <h1>Example</h1>
-  </my-tag>
-</script>
-<script type="riot/tag">
-  <eg-tag>
-    <p id="graph">Hello, world!</p>
-    <ul>
-      <li each={ items }>{ text }</li>
-    </ul>
-    this.items = [{text: 'one'}, {text: 'twp'}];
-  </eg-tag>
-</script>
+<script type="riot/tag" src="my-tag.html"></script>
+<script type="riot/tag" src="eg-tag.html"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/semantic-ui-css@2.4.1/semantic.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/riot@3.13/riot+compiler.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fetchival@0.3.3/index.min.js"></script>
 
 <script>
-  riot.mount('my-tag');
-  riot.mount('eg-tag')
+    riot.mount('my-tag');
+    riot.mount('eg-tag')
 </script>
 </body>
 </html>
