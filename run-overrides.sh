@@ -201,7 +201,7 @@ function app {
 
 function -app-help {
     cat <<EOH
-Starts app on http://localhost:8081.
+Starts app on http://localhost:8080.
 EOH
 }
 
