@@ -1,7 +1,10 @@
-<eg-tag>
+<eg-tag type="es6">
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ items }>{ text }</li>
     </ul>
-    this.items = [{text: 'one'}, {text: 'twp'}];
+    <script type="es6">
+        const items = [{text: 'one'}, {text: 'twp'}];
+        this.items = items;
+    </script>
 </eg-tag>
