@@ -99,13 +99,7 @@ function -format-help {
 }
 
 function db-reset {
-    local quiet=-q
-    if $verbose
-    then
-        quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
-    fi
-
-    $run ./mvnw $quiet clean
+    $run $mvn clean
 
     db-update
 }
@@ -117,13 +111,7 @@ EOH
 }
 
 function db-update {
-    local quiet=-q
-    if $verbose
-    then
-        quiet=-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO
-    fi
-
-    $run ./mvnw $quiet flyway:migrate
+    $run $mvn flyway:migrate
 }
 
 function -db-update-help {
@@ -133,11 +121,6 @@ EOH
 }
 
 function db-shell {
-    local quiet=-q
-    if $verbose
-    then
-        quiet=
-    fi
     local rlwrap=rlwrap
     if ! which rlwrap >/dev/null 2>&1
     then
@@ -145,7 +128,7 @@ function db-shell {
     fi
 
     local sep=
-    local maven_repo="$(./mvnw $quiet -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
+    local maven_repo="$($mvn -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
     case "$(uname)" in
     CYGWIN* | MINGW* )
         maven_repo="$(cygpath -m "$maven_repo")"
@@ -185,18 +168,7 @@ EOH
 }
 
 function app {
-    local quiet=-q
-    if $debug
-    then
-        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG -Dlogging.level.root=DEBUG -Dlogging.root=DEBUG'
-    elif $verbose
-    then
-        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO -Dlogging.level.root=INFO -Dlogging.root=INFO'
-    else
-        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=WARN -Dlogging.level.root=WARN -Dlogging.root=WARN'
-    fi
-
-    $run ./mvnw $quiet -Dspring.output.ansi.enabled=always spring-boot:run
+    $run $mvn -Dspring.output.ansi.enabled=always spring-boot:run
 }
 
 function -app-help {
@@ -206,13 +178,16 @@ EOH
 }
 
 function app-stop {
-    local quiet='-sSo /dev/null'
-    if $verbose
+    local curl_quiet='-sSo /dev/null'
+    if $debug
     then
-        quiet=''
+        curl_quiet='-v'
+    elif $verbose
+    then
+        curl_quiet=''
     fi
 
-    $run curl -X POST $quiet $base_url/actuator/shutdown
+    $run curl -X POST $curl_quiet $base_url/actuator/shutdown
 }
 
 function -app-stop-help {
@@ -245,7 +220,7 @@ do
     esac
 done
 shift $((OPTIND - 1))
-readonly run
+readonly base_url run
 
 case $# in
 0 ) -print-help ; exit 0 ;;
@@ -269,7 +244,21 @@ esac
 
 -setup-colors
 -maybe-debug
-readonly debug
-readonly verbose
+readonly color debug verbose
+
+mvn=./mvnw
+if $debug
+then
+    log_level=DEBUG
+elif $verbose
+then
+    log_level=INFO
+else
+    log_level=WARN
+    mvn="$mvn -q"
+fi
+readonly log_level
+readonly quiet="-Dorg.slf4j.simpleLogger.defaultLogLevel=$log_level -Dlogging.log_level.root=$log_level -Dlogging.root=$log_level"
+readonly mvn="$mvn $quiet"
 
 "$@"
