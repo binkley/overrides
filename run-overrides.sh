@@ -186,9 +186,14 @@ EOH
 
 function app {
     local quiet=-q
-    if $verbose
+    if $debug
     then
-        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO -Dlogging.level.root=INFO'
+        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG -Dlogging.level.root=DEBUG -Dlogging.root=DEBUG'
+    elif $verbose
+    then
+        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO -Dlogging.level.root=INFO -Dlogging.root=INFO'
+    else
+        quiet='-Dorg.slf4j.simpleLogger.defaultLogLevel=WARN -Dlogging.level.root=WARN -Dlogging.root=WARN'
     fi
 
     $run ./mvnw $quiet -Dspring.output.ansi.enabled=always spring-boot:run
