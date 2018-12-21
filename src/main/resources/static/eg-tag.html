@@ -3,17 +3,43 @@
     <ul>
         <li each={ items }>{ text }</li>
     </ul>
+    <form onsubmit={ add_example }>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required/>
+        <input type="submit" value="Create"/>
+    </form>
+    <form onsubmit={ add_override }>
+        <label for="override">Name:</label>
+        <input type="text" name="name" id="override" required/>
+        <input type="submit" value="Override"/>
+    </form>
     <script type="es6">
         this.items = [{text: 'place'}, {text: 'holder'}];
-        fetchival('/examples')
-            .get()
-            .then(json => {
-                console.log('JSON', json);
-                this.items = json._embedded.examples
-                    .map(eg => {
-                        console.log('EG', eg);
-                        return { text: eg.name }});
-                this.update();
-            });
+
+        function updateItems() {
+            fetchival('/examples')
+                .get()
+                .then(json => {
+                    this.items = json._embedded.examples
+                        .map(eg => {
+                            return {text: eg.name}
+                        });
+                    this.update();
+                });
+        }
+
+        function add_example(e) {
+            e.preventDefault();
+            console.log(e);
+        }
+
+        function add_override(e) {
+            e.preventDefault();
+            console.log(e);
+        }
+
+        this.on('mount', function () {
+            updateItems();
+        });
     </script>
 </eg-tag>
