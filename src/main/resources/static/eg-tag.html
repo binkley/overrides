@@ -4,7 +4,16 @@
         <li each={ items }>{ text }</li>
     </ul>
     <script type="es6">
-        const items = [{text: 'one'}, {text: 'twp'}];
-        this.items = items;
+        this.items = [{text: 'place'}, {text: 'holder'}];
+        fetchival('/examples')
+            .get()
+            .then(json => {
+                console.log('JSON', json);
+                this.items = json._embedded.examples
+                    .map(eg => {
+                        console.log('EG', eg);
+                        return { text: eg.name }});
+                this.update();
+            });
     </script>
 </eg-tag>
