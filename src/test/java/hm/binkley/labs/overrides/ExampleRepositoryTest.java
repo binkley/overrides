@@ -42,5 +42,10 @@ public class ExampleRepositoryTest {
                         .id(nancy.getId())
                         .name(nancy.getName())
                         .build()));
+        assertThat(writeRepository.findByName(bob.getName()))
+                .isEqualTo(Optional.of(ExampleWrite.builder()
+                        .id(bob.getId())
+                        .name(bob.getName())
+                        .build()));
     }
 }
