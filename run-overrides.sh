@@ -98,6 +98,7 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
+# Define one, and only one, place for the JDBC URL
 function -setup-sqltool-rcfile {
     local rcfile="$1"
     local hsqldb_url="$(sed -n 's/.*\(jdbc:hsqldb:\)/\1/p' \
