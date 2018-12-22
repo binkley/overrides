@@ -13,6 +13,7 @@ management:
 
 spring:
   datasource:
-    url: jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true
+    url: jdbc:hsqldb:file:./target/overrides;create=true
   main:
     banner-mode: 'off'
+
