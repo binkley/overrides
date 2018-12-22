@@ -122,7 +122,7 @@ EOH
 
 function db-shell {
     local rlwrap=rlwrap
-    if ! which rlwrap >/dev/null 2>&1
+    if ! which rlwrap >/dev/null 2>&1 || ! [[ -t 0 ]]
     then
         rlwrap=
     fi
@@ -191,6 +191,33 @@ function db-server {
 function -db-server-help {
     cat <<EOH
 Runs the local DB server in the foreground.
+EOH
+}
+
+function db-server-stop {
+    local sep=
+    local maven_repo="$($mvn -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
+    case "$(uname)" in
+    CYGWIN* | MINGW* )
+        maven_repo="$(cygpath -m "$maven_repo")"
+        sep=';'
+        ;;
+    * )
+        sep=':'
+        ;;
+    esac
+
+    $run java \
+        -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
+        org.hsqldb.cmdline.SqlTool \
+        --rcFile ./.sqltool.rc \
+        overrides \
+        --sql='SHUTDOWN;'
+}
+
+function -db-server-stop-help {
+    cat <<EOH
+Stops the local DB server.
 EOH
 }
 
