@@ -14,7 +14,7 @@
 # You can run SqlTool right now by copying this file to your home directory
 # and running
 #    java -jar /path/to/sqltool.jar mem
-# This will access the first urlid definition below in order to use a 
+# This will access the first urlid definition below in order to use a
 # personal Memory-Only database.
 # "url" values may, of course, contain JDBC connection properties, delimited
 # with semicolons.
@@ -32,9 +32,9 @@
 
 # A personal Memory-Only (non-persistent) database.
 urlid overrides
-url jdbc:hsqldb:file:./target/overrides;create=true;shutdown=true
+url jdbc:hsqldb:hsql://localhost/overrides
 username SA
 password
-# When connecting directly to a file database like this, you should 
+# When connecting directly to a file database like this, you should
 # use the shutdown connection property like this to shut down the DB
 # properly when you exit the JVM.

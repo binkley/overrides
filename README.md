@@ -14,6 +14,15 @@ Demonstrate overrides from SQL into Spring Data
 
 ## Command line
 
+### Database
+
+Tests and running the application rely on the database running.  Try this
+(foreground process):
+
+```
+$ ./run-overrides.sh db
+```
+
 ### Maven
 
 Maven is fully supported.  Use `./mvnw` (`./mvnw.cmd` in a Windows shell).

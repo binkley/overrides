@@ -128,6 +128,7 @@ EOH
 }
 
 function db-shell {
+    rcfile= # Quiet IntelliJ complaint
     trap 'rm -f "$rcfile"' EXIT
     rcfile="$(mktemp)"
     -setup-sqltool-rcfile "$rcfile"
@@ -178,7 +179,7 @@ Opens the DB in a command-line.  If available, uses 'rlwrap'.
 EOH
 }
 
-function db-server {
+function db {
     local maven_repo="$(./mvnw -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
     case "$(uname)" in
     CYGWIN* | MINGW* )
@@ -199,18 +200,17 @@ function db-server {
         "$@"
 }
 
-function -db-server-help {
+function -db-help {
     cat <<EOH
 Runs the local DB server in the foreground.
 EOH
 }
 
-function db-server-stop {
-    # TODO: Until Java uses HSQL server, not local files
-    trap 'rm -f ${tmp-x}' EXIT
-    local tmp=$(mktemp)
-    sed 's,^url ,url jdbc:hsqldb:hsql://localhost/overrides;shutdown=true,' \
-        <./.sqltool.rc >$tmp
+function db-stop {
+    rcfile= # Quiet IntelliJ complaint
+    trap 'rm -f "$rcfile"' EXIT
+    rcfile="$(mktemp)"
+    -setup-sqltool-rcfile "$rcfile"
 
     local sep=
     local maven_repo="$($mvn -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
@@ -227,12 +227,12 @@ function db-server-stop {
     $run java \
         -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
-        --rcFile $tmp \
+        --rcFile $rcfile \
         --sql='SHUTDOWN;' \
         overrides >/dev/null
 }
 
-function -db-server-stop-help {
+function -db-stop-help {
     cat <<EOH
 Stops the local DB server.
 EOH
@@ -294,8 +294,11 @@ shift $((OPTIND - 1))
 readonly base_url run
 
 case $# in
-0 ) -print-help ; exit 0 ;;
-* ) # TODO: This is ugly code
+0 )
+    -print-help
+    exit 0
+    ;;
+* )
     cmd="$1"
     found=false
     for task in "${tasks[@]}"
