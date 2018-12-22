@@ -167,6 +167,33 @@ Opens the DB in a command-line.  If available, uses 'rlwrap'.
 EOH
 }
 
+function db-server {
+    local maven_repo="$(./mvnw -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
+    case "$(uname)" in
+    CYGWIN* | MINGW* )
+        maven_repo="$(cygpath -m "$maven_repo")"
+        sep=';'
+        ;;
+    * )
+        sep=':'
+        ;;
+    esac
+
+    # TODO: Add --silent=true, but Server class complains, though in the docs
+    $run java \
+        -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar" \
+        org.hsqldb.Server \
+        --database.0 file:./target/overrides \
+        --dbname.0 overrides \
+        "$@"
+}
+
+function -db-server-help {
+    cat <<EOH
+Runs the local DB server in the foreground.
+EOH
+}
+
 function app {
     $run $mvn -Dspring.output.ansi.enabled=always spring-boot:run
 }
