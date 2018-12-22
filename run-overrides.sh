@@ -98,6 +98,13 @@ function -format-help {
    $fmt | sed 's/^/       /'
 }
 
+function -setup-sqltool-rcfile {
+    local rcfile="$1"
+    local hsqldb_url="$(sed -n 's/.*\(jdbc:hsqldb:\)/\1/p' \
+        < src/main/resources/application.yaml)"
+    sed "s,^url ,url $hsqldb_url," <./.sqltool.rc >$rcfile
+}
+
 function db-reset {
     $run $mvn clean
 
@@ -121,6 +128,10 @@ EOH
 }
 
 function db-shell {
+    trap 'rm -f "$rcfile"' EXIT
+    rcfile="$(mktemp)"
+    -setup-sqltool-rcfile "$rcfile"
+
     local rlwrap=rlwrap
     if ! which rlwrap >/dev/null 2>&1 || ! [[ -t 0 ]]
     then
@@ -155,7 +166,7 @@ function db-shell {
     $run $rlwrap java \
         -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
-        --rcFile ./.sqltool.rc \
+        --rcFile "$rcfile" \
         "${opts[@]}" \
         overrides \
         "${args[@]}"
@@ -195,6 +206,12 @@ EOH
 }
 
 function db-server-stop {
+    # TODO: Until Java uses HSQL server, not local files
+    trap 'rm -f ${tmp-x}' EXIT
+    local tmp=$(mktemp)
+    sed 's,^url ,url jdbc:hsqldb:hsql://localhost/overrides;shutdown=true,' \
+        <./.sqltool.rc >$tmp
+
     local sep=
     local maven_repo="$($mvn -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
     case "$(uname)" in
@@ -210,9 +227,9 @@ function db-server-stop {
     $run java \
         -cp "$maven_repo/org/hsqldb/hsqldb/2.4.1/hsqldb-2.4.1.jar$sep$maven_repo/org/hsqldb/sqltool/2.4.1/sqltool-2.4.1.jar" \
         org.hsqldb.cmdline.SqlTool \
-        --rcFile ./.sqltool.rc \
-        overrides \
-        --sql='SHUTDOWN;'
+        --rcFile $tmp \
+        --sql='SHUTDOWN;' \
+        overrides >/dev/null
 }
 
 function -db-server-stop-help {
