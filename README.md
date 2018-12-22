@@ -37,3 +37,8 @@ SELECT * FROM OVERRIDES.Examples;
 ```
 
 After the inserts, try [the HAL browser](http://localhost:8080/examples).
+
+## Caveats
+
+If you use IntelliJ IDEA, please see
+[IDEA-204638](https://github.com/binkley/overrides/tree/IDEA-204638).
