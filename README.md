@@ -2,6 +2,13 @@
 
 Demonstrate overrides from SQL into Spring Data
 
+## Philosophy
+
+* Use default as much as possible
+* Write as little code as possible
+* Follow best practices
+* Use the right tool for the job
+
 ## Tech stack
 
 * Spring Boot 2.1
