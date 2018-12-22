@@ -22,6 +22,7 @@
     <properties>
         <!-- @formatter:off -->
         <java.version>11</java.version>
+        <junit.version>EXCLUDED</junit.version>
         <maven-surefire-plugin.version>3.0.0-M2</maven-surefire-plugin.version>
         <spotbugs.version>3.1.9</spotbugs.version>
         <!-- @formatter:on -->
@@ -72,6 +73,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
