@@ -127,6 +127,9 @@
                 <configuration>
                     <filesets>
                         <fileset>
+                            <directory>build</directory>
+                        </fileset>
+                        <fileset>
                             <directory>out</directory>
                         </fileset>
                     </filesets>
