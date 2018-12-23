@@ -14,17 +14,18 @@
         <input type="submit" value="Override"/>
     </form>
     <script type="es6">
-        this.items = [{text: 'place'}, {text: 'holder'}];
+        const self = this;
+        self.items = [{text: 'place'}, {text: 'holder'}];
 
         function updateItems() {
             fetchival('/examples')
                 .get()
                 .then(json => {
-                    this.items = json._embedded.examples
+                    self.items = json._embedded.examples
                         .map(eg => {
                             return {text: eg.name}
                         });
-                    this.update();
+                    self.update();
                 });
         }
 
