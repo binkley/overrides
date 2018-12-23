@@ -253,10 +253,10 @@ function app-stop {
     local curl_quiet='-sSo /dev/null'
     if $debug
     then
-        curl_quiet='-v'
+        curl_quiet='-vo -'
     elif $verbose
     then
-        curl_quiet=''
+        curl_quiet='-o -'
     fi
 
     $run curl -X POST $curl_quiet $base_url/actuator/shutdown
