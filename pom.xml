@@ -123,12 +123,20 @@
 
         <plugins>
             <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>out</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <url>
-                        jdbc:hsqldb:file:${project.build.directory}/overrides;create=true;shutdown=true
-                    </url>
+                    <url>jdbc:hsqldb:hsql://localhost/overrides</url>
                     <user>sa</user>
                 </configuration>
             </plugin>
