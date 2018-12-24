@@ -2,6 +2,7 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.JavaVersion.VERSION_11
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+import com.github.spotbugs.SpotBugsTask
 
 plugins {
     java
@@ -9,6 +10,7 @@ plugins {
     id("org.springframework.boot") version "2.1.1.RELEASE"
     id("io.spring.dependency-management") version "1.0.6.RELEASE"
     id("org.flywaydb.flyway") version "5.2.4"
+    id("com.github.spotbugs") version "1.6.8"
 }
 
 dependencyManagement {
@@ -25,7 +27,7 @@ repositories {
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
-    compile("com.github.spotbugs:spotbugs-annotations:3.1.9")
+    compile("com.github.spotbugs:spotbugs-annotations:3.1.10")
     compile("org.flywaydb:flyway-core")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-data-jdbc")
@@ -53,6 +55,17 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+spotbugs {
+    toolVersion = "3.1.10"
+}
+
+tasks.withType<SpotBugsTask> {
+    reports {
+        xml.isEnabled = false
+        html.isEnabled = true
+    }
 }
 
 flyway {
