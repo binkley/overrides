@@ -240,6 +240,8 @@ EOH
 }
 
 function app {
+    db-update
+
     $run $mvn -Dspring.output.ansi.enabled=always spring-boot:run
 }
 
