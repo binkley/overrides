@@ -2,25 +2,25 @@
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ items }>{ name } ({
-                null === exampleId ? 'No override' : exampleId
+            null === exampleId ? 'No override' : exampleId
             })
         </li>
     </ul>
     <form onsubmit={ addExample }>
         <h2>Create an example</h2>
-        <p>Examples are complete, unique entries in their "raw" form</p>
+        <p>Examples are complete, unique entries in their "direct" form</p>
         <fieldset>
             <legend>Create an example</legend>
             <label>Name:
                 <input type="text" id="addExampleName" name="name" ref="name"
-                        required/>
+                        onkeyup={ editAddExampleName } required/>
             </label>
-            <button>Example</button>
+            <button disabled={ !addExampleName }>Create</button>
         </fieldset>
     </form>
     <form onsubmit={ addOverride }>
         <h2>Create an override</h2>
-        <p>Overrides temporarily change the data of an existing example</p>
+        <p>Overrides temporarily an existing example</p>
         <fieldset>
             <legend>Create an override</legend>
             <label>Example ID:
@@ -32,19 +32,19 @@
                 <input type="text" id="addOverrideName" name="exampleId"
                         ref="name" required/>
             </label>
-            <button>Override</button>
+            <button>Create</button>
         </fieldset>
     </form>
     <form onsubmit={ delOverride }>
         <h2>Undo an override</h2>
-        <p>Overrides temporarily change the data of an existing example</p>
+        <p>Undoes the temporarily override of an existing example</p>
         <fieldset>
             <legend>Undo an override</legend>
             <label>Example ID:
                 <input type="number" id="delOverrideExampleId" name="name"
                         ref="exampleId" required/>
             </label>
-            <button>Override</button>
+            <button>Undo</button>
         </fieldset>
     </form>
     <script type="es6">
@@ -60,16 +60,24 @@
                 });
         }
 
+        function editAddExampleName(e) {
+            console.log(e);
+            console.log(e.target);
+            console.log(e.target.value);
+            self.addExampleName = e.target.value;
+        }
+
+
         function addExample(e) {
-            e.preventDefault();
             console.log(e);
             console.log(e.type);
             console.log(e.target);
             console.log(e.refs);
             console.log(e.refs.name);
+            e.preventDefault();
             fetchival('/p_Examples')
                 .post({
-                    name: this.refs.name
+                    name: this.refs.name.value
                 })
                 .then(__ => {
                     updateItems();
@@ -78,13 +86,13 @@
         }
 
         function addOverride(e) {
-            e.preventDefault();
             console.log(e);
+            e.preventDefault();
         }
 
         function delOverride(e) {
-            e.preventDefault();
             console.log(e);
+            e.preventDefault();
         }
 
         this.on('mount', function () {
