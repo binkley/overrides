@@ -1,7 +1,10 @@
 <eg-tag type="es6">
     <p id="graph">Hello, world!</p>
     <ul>
-        <li each={ items }>{ name } ({ exampleId })</li>
+        <li each={ items }>{ name } ({
+                null === exampleId ? 'No override' : exampleId
+            })
+        </li>
     </ul>
     <form onsubmit={ addExample }>
         <h2>Create an example</h2>
