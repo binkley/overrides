@@ -56,5 +56,7 @@ After the inserts, try [the HAL browser](http://localhost:8080/examples).
 
 ## Caveats
 
-If you use IntelliJ IDEA, please see
+* If you use IntelliJ IDEA, please see
 [IDEA-204638](https://github.com/binkley/overrides/tree/IDEA-204638).
+* Try out advice in (Spring Data JDBC, References, and Aggregates)
+[https://spring.io/blog/2018/09/24/spring-data-jdbc-references-and-aggregates]
