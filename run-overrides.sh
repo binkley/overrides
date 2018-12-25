@@ -119,12 +119,36 @@ EOH
 }
 
 function db-update {
-    $run $mvn flyway:migrate
+    local OPTIND in_place=false
+    while getopts :i-: opt
+    do
+        [[ - == $opt ]] && opt=${OPTARG%%=*} OPTARG=${OPTARG#*=}
+        case $opt in
+        i | in-place ) in_place=true ;;
+        * ) echo "Usage: $0 $FUNCNAME [-i]" >&2 ; exit 2 ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+    case $# in
+    0 ) ;;
+    * ) echo "Usage: $0 $FUNCNAME [-i]" >&2 ; exit 2 ;;
+    esac
+
+    local flyway_url=''
+    if $in_place
+    then
+        flyway_url='-Dflyway.url=jdbc:hsqldb:file:./target/overrides;shutdown=true'
+    fi
+
+    $run $mvn $flyway_url flyway:migrate
 }
 
 function -db-update-help {
     cat <<EOH
 Updates database to current schema.
+
+Flags:
+   -i, --in-place   Updates database in place (ignores DB server)
 EOH
 }
 
@@ -181,6 +205,9 @@ EOH
 }
 
 function db {
+    # Update schema before DB runs in foreground
+    db-update -i
+
     local maven_repo="$(./mvnw -DforceStdout help:evaluate -Dexpression=settings.localRepository)"
     case "$(uname)" in
     CYGWIN* | MINGW* )
