@@ -279,6 +279,7 @@ EOH
 }
 
 function app-stop {
+    # TODO: Mingw does not really have a /dev/null
     local curl_quiet='-sSo /dev/null'
     if $debug
     then
