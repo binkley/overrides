@@ -21,6 +21,7 @@
 
     <properties>
         <!-- @formatter:off -->
+        <flyway.url>jdbc:hsqldb:hsql://localhost/overrides</flyway.url>
         <java.version>11</java.version>
         <junit.version>EXCLUDED</junit.version>
         <maven-surefire-plugin.version>3.0.0-M2</maven-surefire-plugin.version>
@@ -139,7 +140,7 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <url>jdbc:hsqldb:hsql://localhost/overrides</url>
+                    <url>${flyway.url}</url>
                     <user>sa</user>
                 </configuration>
             </plugin>
