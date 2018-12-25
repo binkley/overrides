@@ -1,4 +1,4 @@
-<eg-tag type="es6">
+<eg-tag>
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ items }>{ name } ({
@@ -47,14 +47,14 @@
             <button>Undo</button>
         </fieldset>
     </form>
-    <script type="es6">
-        const self = this;
+    <script>
+        var self = this;
         self.items = [{text: 'place'}, {text: 'holder'}];
 
         function updateItems() {
             fetchival('/examples')
                 .get()
-                .then(json => {
+                .then(function (json) {
                     self.items = json._embedded.examples;
                     self.update();
                 });
@@ -79,7 +79,7 @@
                 .post({
                     name: this.refs.name.value
                 })
-                .then(__ => {
+                .then(function () {
                     updateItems();
                 });
             return false;
