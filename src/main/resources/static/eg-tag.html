@@ -1,17 +1,48 @@
 <eg-tag type="es6">
     <p id="graph">Hello, world!</p>
     <ul>
-        <li each={ items }>{ text }</li>
+        <li each={ items }>{ name } ({ exampleId })</li>
     </ul>
-    <form onsubmit={ add_example }>
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" required/>
-        <input type="submit" value="Create"/>
+    <form onsubmit={ addExample }>
+        <h2>Create an example</h2>
+        <p>Examples are complete, unique entries in their "raw" form</p>
+        <fieldset>
+            <legend>Create an example</legend>
+            <label>Name:
+                <input type="text" id="addExampleName" name="name" ref="name"
+                        required/>
+            </label>
+            <button>Example</button>
+        </fieldset>
     </form>
-    <form onsubmit={ add_override }>
-        <label for="override">Name:</label>
-        <input type="text" name="name" id="override" required/>
-        <input type="submit" value="Override"/>
+    <form onsubmit={ addOverride }>
+        <h2>Create an override</h2>
+        <p>Overrides temporarily change the data of an existing example</p>
+        <fieldset>
+            <legend>Create an override</legend>
+            <label>Example ID:
+                <input type="number" id="addOverrideExampleId" name="name"
+                        ref="exampleId" required/>
+            </label>
+            <br>
+            <label>Name:
+                <input type="text" id="addOverrideName" name="exampleId"
+                        ref="name" required/>
+            </label>
+            <button>Override</button>
+        </fieldset>
+    </form>
+    <form onsubmit={ delOverride }>
+        <h2>Undo an override</h2>
+        <p>Overrides temporarily change the data of an existing example</p>
+        <fieldset>
+            <legend>Undo an override</legend>
+            <label>Example ID:
+                <input type="number" id="delOverrideExampleId" name="name"
+                        ref="exampleId" required/>
+            </label>
+            <button>Override</button>
+        </fieldset>
     </form>
     <script type="es6">
         const self = this;
@@ -21,20 +52,34 @@
             fetchival('/examples')
                 .get()
                 .then(json => {
-                    self.items = json._embedded.examples
-                        .map(eg => {
-                            return {text: eg.name}
-                        });
+                    self.items = json._embedded.examples;
                     self.update();
                 });
         }
 
-        function add_example(e) {
+        function addExample(e) {
+            e.preventDefault();
+            console.log(e);
+            console.log(e.type);
+            console.log(e.target);
+            console.log(e.refs);
+            console.log(e.refs.name);
+            fetchival('/p_Examples')
+                .post({
+                    name: this.refs.name
+                })
+                .then(__ => {
+                    updateItems();
+                });
+            return false;
+        }
+
+        function addOverride(e) {
             e.preventDefault();
             console.log(e);
         }
 
-        function add_override(e) {
+        function delOverride(e) {
             e.preventDefault();
             console.log(e);
         }

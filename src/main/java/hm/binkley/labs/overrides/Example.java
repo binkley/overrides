@@ -13,5 +13,6 @@ import org.springframework.data.relational.core.mapping.Table;
 public final class Example {
     @Id
     private Long id;
+    private Long exampleId;
     private String name;
 }

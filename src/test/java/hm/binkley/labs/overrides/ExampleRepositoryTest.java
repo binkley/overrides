@@ -36,11 +36,13 @@ public class ExampleRepositoryTest {
                 .isEqualTo(Optional.of(Example.builder()
                         .id(bob.getId())
                         .name(fred.getName())
+                        .exampleId(bob.getId())
                         .build()));
         assertThat(repository.findById(nancy.getId()))
                 .isEqualTo(Optional.of(Example.builder()
                         .id(nancy.getId())
                         .name(nancy.getName())
+                        .exampleId(null)
                         .build()));
         assertThat(writeRepository.findByName(bob.getName()))
                 .isEqualTo(Optional.of(ExampleWrite.builder()
