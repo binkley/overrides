@@ -2,10 +2,8 @@
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ examples }>
-            { name } ({
-            typeof(exampleId) === 'undefined' || null === exampleId
-            ? '-' : exampleId
-            })
+            { name } ({ null === exampleId ? '-' : exampleId })
+            <a href="{ _links.self.href }">View</a>
         </li>
     </ul>
     <form onsubmit={ addExample }>
@@ -51,7 +49,7 @@
     </form>
     <script>
       var self = this
-      self.examples = [{name: 'If you see this'}, {name: 'REST is broken'}]
+      self.examples = []
 
       updateExamples()
       {
