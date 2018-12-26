@@ -24,8 +24,13 @@
         <fieldset>
             <legend>Create an override</legend>
             <label>Example ID:
-                <input type="number" id="addOverrideExampleId"
-                        ref="addOverrideExampleId" required/>
+                <!-- TODO: Temp until have access to IDs -->
+                <select id="addOverrideExampleId"
+                        ref="addOverrideExampleId" required>
+                    <option each={ examples }>
+                        { name }
+                    </option>
+                </select>
             </label>
             <br>
             <label>Name:
