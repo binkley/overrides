@@ -4,7 +4,7 @@
         <li each={ examples }>
             { name } ({
             typeof(exampleId) === 'undefined' || null === exampleId
-            ? '*' : exampleId
+            ? '-' : exampleId
             })
         </li>
     </ul>
@@ -14,10 +14,10 @@
         <fieldset>
             <legend>Create an example</legend>
             <label>Name:
-                <input type="text" id="addExampleName" name="name" ref="name"
-                        onkeyup={ editAddExampleName } required/>
+                <input type="text" id="addExampleName" name="name"
+                        ref="addExampleName" required/>
             </label>
-            <button disabled={ !addExampleName }>Create</button>
+            <button>Create</button>
         </fieldset>
     </form>
     <form onsubmit={ addOverride }>
@@ -27,12 +27,12 @@
             <legend>Create an override</legend>
             <label>Example ID:
                 <input type="number" id="addOverrideExampleId" name="name"
-                        ref="exampleId" required/>
+                        ref="addOverrideExampleId" required/>
             </label>
             <br>
             <label>Name:
                 <input type="text" id="addOverrideName" name="exampleId"
-                        ref="name" required/>
+                        ref="addOverrideName" required/>
             </label>
             <button>Create</button>
         </fieldset>
@@ -44,65 +44,60 @@
             <legend>Undo an override</legend>
             <label>Example ID:
                 <input type="number" id="delOverrideExampleId" name="name"
-                        ref="exampleId" required/>
+                        ref="delOverrideExampleId" required/>
             </label>
             <button>Undo</button>
         </fieldset>
     </form>
     <script>
-      var self = this;
-      self.examples = [{name: 'If you see this'}, {name: 'REST is broken'}];
+      var self = this
+      self.examples = [{name: 'If you see this'}, {name: 'REST is broken'}]
 
-      updateItems()
+      updateExamples()
       {
         fetchival('/examples')
           .get()
           .then(function (json) {
-            self.examples = json._embedded.examples;
-            self.update();
+            self.examples = json._embedded.examples
+            self.update()
           });
-      }
-
-      editAddExampleName(e)
-      {
-        console.log(e);
-        console.log(e.target);
-        console.log(e.target.value);
-        self.addExampleName = e.target.value;
       }
 
       addExample(e)
       {
-        console.log(e);
-        console.log(e.type);
-        console.log(e.target);
-        console.log(e.refs);
-        console.log(e.refs.name);
-        fetchival('/p_Examples')
+        e.preventDefault()
+        fetchival('/directs')
           .post({
-            name: this.refs.name.value
+            name: self.refs.addExampleName.value
           })
           .then(function () {
-            self.updateItems();
-          });
-        e.preventDefault();
-        return false;
+            self.updateExamples()
+          })
+        return false
       }
 
       addOverride(e)
       {
-        console.log(e);
-        e.preventDefault();
+        e.preventDefault()
+        fetchival('/overrides')
+          .post({
+            exampleId: self.refs.addOverrideExampleId.value,
+            name: self.refs.addOverrideName.value
+          })
+          .then(function () {
+            self.updateExamples()
+          })
+        return false
       }
 
       delOverride(e)
       {
-        console.log(e);
-        e.preventDefault();
+        e.preventDefault()
+        console.log('E', e)
       }
 
-      this.on('mount', function () {
-        self.updateItems();
-      });
+      self.on('mount', function () {
+        self.updateExamples()
+      })
     </script>
 </eg-tag>
