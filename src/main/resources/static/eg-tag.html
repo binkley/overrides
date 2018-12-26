@@ -1,8 +1,10 @@
 <eg-tag>
     <p id="graph">Hello, world!</p>
     <ul>
-        <li each={ items }>{ name } ({
-            null === exampleId ? 'No override' : exampleId
+        <li each={ examples }>
+            { name } ({
+            typeof(exampleId) === 'undefined' || null === exampleId
+            ? '*' : exampleId
             })
         </li>
     </ul>
@@ -48,55 +50,59 @@
         </fieldset>
     </form>
     <script>
-        var self = this;
-        self.items = [{text: 'place'}, {text: 'holder'}];
+      var self = this;
+      self.examples = [{name: 'If you see this'}, {name: 'REST is broken'}];
 
-        function updateItems() {
-            fetchival('/examples')
-                .get()
-                .then(function (json) {
-                    self.items = json._embedded.examples;
-                    self.update();
-                });
-        }
+      updateItems()
+      {
+        fetchival('/examples')
+          .get()
+          .then(function (json) {
+            self.examples = json._embedded.examples;
+            self.update();
+          });
+      }
 
-        function editAddExampleName(e) {
-            console.log(e);
-            console.log(e.target);
-            console.log(e.target.value);
-            self.addExampleName = e.target.value;
-        }
+      editAddExampleName(e)
+      {
+        console.log(e);
+        console.log(e.target);
+        console.log(e.target.value);
+        self.addExampleName = e.target.value;
+      }
 
+      addExample(e)
+      {
+        console.log(e);
+        console.log(e.type);
+        console.log(e.target);
+        console.log(e.refs);
+        console.log(e.refs.name);
+        fetchival('/p_Examples')
+          .post({
+            name: this.refs.name.value
+          })
+          .then(function () {
+            self.updateItems();
+          });
+        e.preventDefault();
+        return false;
+      }
 
-        function addExample(e) {
-            console.log(e);
-            console.log(e.type);
-            console.log(e.target);
-            console.log(e.refs);
-            console.log(e.refs.name);
-            e.preventDefault();
-            fetchival('/p_Examples')
-                .post({
-                    name: this.refs.name.value
-                })
-                .then(function () {
-                    updateItems();
-                });
-            return false;
-        }
+      addOverride(e)
+      {
+        console.log(e);
+        e.preventDefault();
+      }
 
-        function addOverride(e) {
-            console.log(e);
-            e.preventDefault();
-        }
+      delOverride(e)
+      {
+        console.log(e);
+        e.preventDefault();
+      }
 
-        function delOverride(e) {
-            console.log(e);
-            e.preventDefault();
-        }
-
-        this.on('mount', function () {
-            updateItems();
-        });
+      this.on('mount', function () {
+        self.updateItems();
+      });
     </script>
 </eg-tag>
