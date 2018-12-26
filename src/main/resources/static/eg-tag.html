@@ -2,7 +2,7 @@
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ examples }>
-            { name } ({ null === exampleId ? '-' : exampleId })
+            { name } ({ null === overrideId ? '-' : overrideId })
             <a href="{ _links.self.href }">View</a>
         </li>
     </ul>

@@ -14,5 +14,5 @@ public final class Example {
     @Id
     private Long id;
     private String name;
-    private Long exampleId;
+    private Long overrideId;
 }

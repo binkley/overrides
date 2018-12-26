@@ -38,10 +38,10 @@ public class ExampleRepositoryTest {
 
         assertThat(repository.findById(bob.getId())).isEqualTo(Optional.of(
                 Example.builder().id(bob.getId()).name(fred.getName())
-                        .exampleId(bob.getId()).build()));
+                        .overrideId(bob.getId()).build()));
         assertThat(repository.findById(nancy.getId())).isEqualTo(Optional.of(
                 Example.builder().id(nancy.getId()).name(nancy.getName())
-                        .exampleId(null).build()));
+                        .overrideId(null).build()));
         assertThat(writeRepository.findByName(bob.getName())).isEqualTo(
                 Optional.of(ExampleWrite.builder().id(bob.getId())
                         .name(bob.getName()).build()));
