@@ -60,7 +60,7 @@
       {
         fetchival('/examples')
           .get()
-          .then(function (json) {
+          .then((json) => {
             var examples = json._embedded.examples.map(e =>
               Object.defineProperty(e, 'link', {
                 value: e._links.self.href
@@ -78,9 +78,7 @@
           .post({
             name: self.refs.addExampleName.value
           })
-          .then(function () {
-            self.updateExamples()
-          })
+          .then(() => self.updateExamples())
         return false
       }
 
@@ -92,9 +90,7 @@
             exampleId: self.refs.addOverrideExampleId.value,
             name: self.refs.addOverrideName.value
           })
-          .then(function () {
-            self.updateExamples()
-          })
+          .then(() => self.updateExamples())
         return false
       }
 
@@ -104,8 +100,6 @@
         console.log('E', e)
       }
 
-      self.on('mount', function () {
-        self.updateExamples()
-      })
+      self.on('mount', () => self.updateExamples())
     </script>
 </eg-tag>
