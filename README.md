@@ -4,7 +4,7 @@ Demonstrate overrides from SQL into Spring Data, using Riot.JS for frontend
 
 ## Philosophy
 
-* Use default as much as possible
+* Use defaults as much as possible
 * Write as little code as possible
 * Follow best practices
 * Use the right tool for the job
