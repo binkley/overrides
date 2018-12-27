@@ -9,7 +9,9 @@
       var h1s = document.getElementsByTagName('h1')
       var h2s = document.getElementsByTagName('h2')
       var forms = document.getElementsByTagName('form')
+      var labels = document.getElementsByTagName('label')
       var selects = document.getElementsByTagName('select')
+      var inputs = document.getElementsByTagName('input')
       var buttons = document.getElementsByTagName('button')
       window.onload = function () {
         for (var i = 0; i < h1s.length; ++i) {
@@ -21,8 +23,14 @@
         for (var i = 0; i < forms.length; ++i) {
           forms[i].className = 'ui form'
         }
+        for (var i = 0; i < labels.length; ++i) {
+          labels[i].className = 'ui label'
+        }
         for (var i = 0; i < selects.length; ++i) {
           selects[i].className = 'ui selection flex dropdown'
+        }
+        for (var i = 0; i < inputs.length; ++i) {
+          inputs[i].className = 'ui input'
         }
         for (var i = 0; i < buttons.length; ++i) {
           buttons[i].className = 'ui button'

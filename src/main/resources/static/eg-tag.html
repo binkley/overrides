@@ -11,10 +11,9 @@
         <p>Examples are complete, unique entries in their "direct" form</p>
         <fieldset>
             <legend>Create an example</legend>
-            <label>Name:
-                <input type="text" id="addExampleName" ref="addExampleName"
-                        required/>
-            </label>
+            <label for="addExampleName">Name:</label>
+            <input type="text" id="addExampleName" ref="addExampleName"
+                    required/>
             <button>Create</button>
         </fieldset>
     </form>
@@ -23,20 +22,18 @@
         <p>Overrides temporarily an existing example</p>
         <fieldset>
             <legend>Create an override</legend>
-            <label>Example ID:
-                <select id="addOverrideExampleId"
-                        ref="addOverrideExampleId" required>
-                    <option each={ examplesWithoutOverrides() }
-                            value={ resourceId }>
-                        { resourceId } - { name }
-                    </option>
-                </select>
-            </label>
+            <label for="addOverrideExampleId">Example ID:</label>
+            <select id="addOverrideExampleId" ref="addOverrideExampleId"
+                    required>
+                <option each={ examplesWithoutOverrides() }
+                        value={ resourceId }>
+                    { resourceId } - { name }
+                </option>
+            </select>
             <br>
-            <label>Name:
-                <input type="text" id="addOverrideName"
-                        ref="addOverrideName" required/>
-            </label>
+            <label for="addOverrideName">Name:</label>
+            <input type="text" id="addOverrideName" ref="addOverrideName"
+                    required/>
             <button>Create</button>
         </fieldset>
     </form>
@@ -45,15 +42,14 @@
         <p>Undoes the temporarily override of an existing example</p>
         <fieldset>
             <legend>Undo an override</legend>
-            <label>Example ID:
-                <select id="delOverrideExampleId"
-                        ref="delOverrideExampleId" required>
-                    <option each={ examplesWithOverrides() }
-                            value={ overrideId }>
-                        { overrideId } - { name }
-                    </option>
-                </select>
-            </label>
+            <label for="delOverrideExampleId">Example ID:</label>
+            <select id="delOverrideExampleId" ref="delOverrideExampleId"
+                    required>
+                <option each={ examplesWithOverrides() }
+                        value={ overrideId }>
+                    { overrideId } - { name }
+                </option>
+            </select>
             <button>Undo</button>
         </fieldset>
     </form>
