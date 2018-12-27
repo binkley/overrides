@@ -1,12 +1,12 @@
 <eg-tag>
-    <p class="ui sub header">Hello, world!</p>
+    <h2>Hello, world!</h2>
     <ul>
         <li each={ examples } value={ resourceId }>
             { name }{ null === overrideId ? '' : '*' }
             <a href="{ _links.self.href }">View</a>
         </li>
     </ul>
-    <form onsubmit={ addExample } class="ui form">
+    <form onsubmit={ addExample }>
         <h2>Create an example</h2>
         <p>Examples are complete, unique entries in their "direct" form</p>
         <fieldset>
@@ -15,18 +15,17 @@
                 <input type="text" id="addExampleName" ref="addExampleName"
                         required/>
             </label>
-            <button class="ui button">Create</button>
+            <button>Create</button>
         </fieldset>
     </form>
-    <form onsubmit={ addOverride } class="ui form">
+    <form onsubmit={ addOverride }>
         <h2>Create an override</h2>
         <p>Overrides temporarily an existing example</p>
         <fieldset>
             <legend>Create an override</legend>
             <label>Example ID:
                 <select id="addOverrideExampleId"
-                        ref="addOverrideExampleId" required
-                        class="ui selection flex dropdown">
+                        ref="addOverrideExampleId" required>
                     <option each={ examplesWithoutOverrides() }
                             value={ resourceId }>
                         { resourceId } - { name }
@@ -38,25 +37,24 @@
                 <input type="text" id="addOverrideName"
                         ref="addOverrideName" required/>
             </label>
-            <button class="ui button">Create</button>
+            <button>Create</button>
         </fieldset>
     </form>
-    <form onsubmit={ delOverride } class="ui form">
+    <form onsubmit={ delOverride }>
         <h2>Undo an override</h2>
         <p>Undoes the temporarily override of an existing example</p>
         <fieldset>
             <legend>Undo an override</legend>
             <label>Example ID:
                 <select id="delOverrideExampleId"
-                        ref="delOverrideExampleId" required
-                        class="ui selection flex dropdown">
+                        ref="delOverrideExampleId" required>
                     <option each={ examplesWithOverrides() }
                             value={ overrideId }>
                         { overrideId } - { name }
                     </option>
                 </select>
             </label>
-            <button class="ui button">Undo</button>
+            <button>Undo</button>
         </fieldset>
     </form>
     <script>

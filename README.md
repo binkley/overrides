@@ -17,7 +17,7 @@ Demonstrate overrides from SQL into Spring Data, using Riot.JS for frontend
 * HSQLDB
 * Flyway
 * Riot JS
-* Semantic UI CSS
+* Semantic UI CSS (no jQuery)
 
 ## Command line
 

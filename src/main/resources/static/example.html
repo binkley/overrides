@@ -5,9 +5,33 @@
     <title>Example</title>
     <link rel="stylesheet" type="text/css"
             href="https://cdn.jsdelivr.net/npm/fomantic-ui-css@2.6.4/semantic.min.css">
+    <script>
+      var h1s = document.getElementsByTagName('h1')
+      var h2s = document.getElementsByTagName('h2')
+      var forms = document.getElementsByTagName('form')
+      var selects = document.getElementsByTagName('select')
+      var buttons = document.getElementsByTagName('button')
+      window.onload = function () {
+        for (var i = 0; i < h1s.length; ++i) {
+          h1s[i].className = 'ui header'
+        }
+        for (var i = 0; i < h2s.length; ++i) {
+          h2s[i].className = 'ui header'
+        }
+        for (var i = 0; i < forms.length; ++i) {
+          forms[i].className = 'ui form'
+        }
+        for (var i = 0; i < selects.length; ++i) {
+          selects[i].className = 'ui selection flex dropdown'
+        }
+        for (var i = 0; i < buttons.length; ++i) {
+          buttons[i].className = 'ui button'
+        }
+      }
+    </script>
 </head>
 <body>
-<h1 class="ui header">Example</h1>
+<h1>Example</h1>
 <eg-tag></eg-tag>
 <script type="riot/tag" src="eg-tag.html"></script>
 <!--<script src="https://cdn.jsdelivr.net/npm/semantic-ui-css@2.4.1/semantic.min.js"></script>-->
