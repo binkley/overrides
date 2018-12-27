@@ -12,7 +12,7 @@ Demonstrate overrides from SQL into Spring Data, using Riot.JS for frontend
 ## Tech stack
 
 * Spring Boot 2.1
-* Spring Data JDBC (no JPA or Hibernate)
+* Spring Data JDBC (no JPA nor Hibernate)
 * RESTful repositories
 * HSQLDB
 * Flyway
