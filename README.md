@@ -1,6 +1,6 @@
 # Overrides
 
-Demonstrate overrides from SQL into Spring Data
+Demonstrate overrides from SQL into Spring Data, using Riot.JS for frontend
 
 ## Philosophy
 
