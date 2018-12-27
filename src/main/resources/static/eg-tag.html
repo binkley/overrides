@@ -2,8 +2,7 @@
     <p id="graph">Hello, world!</p>
     <ul>
         <li each={ examples } value={ resourceId }>
-            { resourceId }: { name }
-            ({ null === overrideId ? '-' : overrideId })
+            { name }{ null === overrideId ? '' : '*' }
             <a href="{ _links.self.href }">View</a>
         </li>
     </ul>
@@ -27,8 +26,9 @@
             <label>Example ID:
                 <select id="addOverrideExampleId"
                         ref="addOverrideExampleId" required>
-                    <option each={ examplesWithoutOverrides() }>
-                        { resourceId }
+                    <option each={ examplesWithoutOverrides() }
+                            value={ resourceId }>
+                        { resourceId } - { name }
                     </option>
                 </select>
             </label>
@@ -48,8 +48,9 @@
             <label>Example ID:
                 <select id="delOverrideExampleId"
                         ref="delOverrideExampleId" required>
-                    <option each={ examplesWithOverrides() }>
-                        { overrideId }
+                    <option each={ examplesWithOverrides() }
+                            value={ overrideId }>
+                        { overrideId } - { name }
                     </option>
                 </select>
             </label>
@@ -102,7 +103,13 @@
       delOverride(e)
       {
         e.preventDefault()
-        console.log('E', e)
+        fetchival('/overrides/' + self.refs.delOverrideExampleId.value)
+          .delete()
+          .then(function () {
+              self.updateExamples()
+            }
+          )
+        return false
       }
 
       examplesWithoutOverrides()
