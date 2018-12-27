@@ -1,9 +1,10 @@
 <eg-tag>
     <p id="graph">Hello, world!</p>
     <ul>
-        <li each={ examples }>
-            { name } ({ null === overrideId ? '-' : overrideId })
-            <a href="{ link }">View</a>
+        <li each={ examples } value={ resourceId }>
+            { resourceId }: { name }
+            ({ null === overrideId ? '-' : overrideId })
+            <a href="{ _links.self.href }">View</a>
         </li>
     </ul>
     <form onsubmit={ addExample }>
@@ -24,11 +25,10 @@
         <fieldset>
             <legend>Create an override</legend>
             <label>Example ID:
-                <!-- TODO: Temp until have access to IDs -->
                 <select id="addOverrideExampleId"
                         ref="addOverrideExampleId" required>
-                    <option each={ examples }>
-                        { name }
+                    <option each={ examplesWithoutOverrides() }>
+                        { resourceId }
                     </option>
                 </select>
             </label>
@@ -46,8 +46,12 @@
         <fieldset>
             <legend>Undo an override</legend>
             <label>Example ID:
-                <input type="number" id="delOverrideExampleId"
-                        ref="delOverrideExampleId" required/>
+                <select id="delOverrideExampleId"
+                        ref="delOverrideExampleId" required>
+                    <option each={ examplesWithOverrides() }>
+                        { overrideId }
+                    </option>
+                </select>
             </label>
             <button>Undo</button>
         </fieldset>
@@ -60,15 +64,10 @@
       {
         fetchival('/examples')
           .get()
-          .then((json) => {
-            var examples = json._embedded.examples.map(e =>
-              Object.defineProperty(e, 'link', {
-                value: e._links.self.href
-              }))
-
-            self.examples = examples
+          .then(function (json) {
+            self.examples = json._embedded.examples
             self.update()
-          });
+          })
       }
 
       addExample(e)
@@ -78,7 +77,10 @@
           .post({
             name: self.refs.addExampleName.value
           })
-          .then(() => self.updateExamples())
+          .then(function () {
+              self.updateExamples()
+            }
+          )
         return false
       }
 
@@ -90,7 +92,10 @@
             exampleId: self.refs.addOverrideExampleId.value,
             name: self.refs.addOverrideName.value
           })
-          .then(() => self.updateExamples())
+          .then(function () {
+              self.updateExamples()
+            }
+          )
         return false
       }
 
@@ -100,6 +105,22 @@
         console.log('E', e)
       }
 
-      self.on('mount', () => self.updateExamples())
+      examplesWithoutOverrides()
+      {
+        return self.examples.filter(function (e) {
+          return null === e.overrideId
+        })
+      }
+
+      examplesWithOverrides()
+      {
+        return self.examples.filter(function (e) {
+          return null !== e.overrideId
+        })
+      }
+
+      self.on('mount', function () {
+        self.updateExamples()
+      })
     </script>
 </eg-tag>

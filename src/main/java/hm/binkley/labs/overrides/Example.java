@@ -15,4 +15,9 @@ public final class Example {
     private Long id;
     private String name;
     private Long overrideId;
+
+    /** @todo No application property for this? */
+    public Long getResourceId() {
+        return id;
+    }
 }
