@@ -11,6 +11,7 @@ Demonstrate overrides from SQL into Spring Data, using Riot.JS for frontend
 
 ## Tech stack
 
+* Maven and Gradle
 * Spring Boot 2.1
 * Spring Data JDBC (no JPA nor Hibernate)
 * RESTful repositories
@@ -32,12 +33,11 @@ $ ./run-overrides.sh db
 
 ### Maven
 
-Maven is fully supported.  Use `./mvnw` (`./mvnw.cmd` in a Windows shell).
+Use `./mvnw` (`./mvnw.cmd` in a Windows shell).
 
 ### Gradle
 
-Gradle is experimentally supported.  Use `./gradlew` (`./gradlew.bat` in a
-Windows shell).
+Use `./gradlew` (`./gradlew.bat` in a Windows shell).
 
 ### Run script
 
