@@ -1,8 +1,9 @@
+import com.github.spotbugs.SpotBugsTask
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.JavaVersion.VERSION_11
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-import com.github.spotbugs.SpotBugsTask
 
 plugins {
     java
@@ -74,3 +75,13 @@ flyway {
 }
 
 defaultTasks("clean", "build")
+
+tasks {
+    wrapper {
+        distributionType = ALL
+    }
+
+    clean {
+        delete("$projectDir/out")
+    }
+}
