@@ -38,7 +38,7 @@ public class ExampleRepositoryTest {
 
         assertThat(repository.findById(bob.getId())).isEqualTo(Optional.of(
                 Example.builder().id(bob.getId()).name(fred.getName())
-                        .overrideId(bob.getId()).build()));
+                        .overrideId(fred.getId()).build()));
         assertThat(repository.findById(nancy.getId())).isEqualTo(Optional.of(
                 Example.builder().id(nancy.getId()).name(nancy.getName())
                         .overrideId(null).build()));
@@ -58,8 +58,7 @@ public class ExampleRepositoryTest {
                 .save(new ExampleOverrideWrite(null, bob.getId(), "Howard")));
         final Optional<Throwable> expected = Stream
                 .iterate(thrown, Objects::nonNull, Throwable::getCause)
-                .filter(t -> t instanceof DuplicateKeyException)
-                .findFirst();
+                .filter(t -> t instanceof DuplicateKeyException).findFirst();
         assertThat(expected).isNotEmpty();
     }
 }
