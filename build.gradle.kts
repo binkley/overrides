@@ -1,10 +1,10 @@
 import com.github.spotbugs.SpotBugsTask
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import java.math.BigDecimal
 import org.gradle.api.JavaVersion.VERSION_11
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-import java.math.BigDecimal
 
 plugins {
     java
@@ -36,17 +36,19 @@ repositories {
 dependencies {
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
-    compile("com.github.spotbugs:spotbugs-annotations:3.1.10")
-    compile("org.flywaydb:flyway-core")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-data-jdbc")
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
-    compile("org.springframework.data:spring-data-rest-hal-browser")
-    runtime("com.zaxxer:HikariCP")
-    runtime("org.hsqldb:hsqldb")
-    testCompile("org.assertj:assertj-core")
-    testCompile("org.junit.jupiter:junit-jupiter-engine")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.github.spotbugs:spotbugs-annotations:3.1.10")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+    testCompileOnly("org.projectlombok:lombok")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    runtimeOnly("org.springframework.data:spring-data-rest-hal-browser")
+    runtimeOnly("org.hsqldb:hsqldb")
+    runtimeOnly("org.hsqldb:sqltool:${dependencyManagement.importedProperties["hsqldb.version"]}")
+    runtimeOnly("com.zaxxer:HikariCP")
 }
 
 group = "hm.binkley.labs"
