@@ -45,10 +45,10 @@ dependencies {
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    runtimeOnly("org.springframework.data:spring-data-rest-hal-browser")
-    runtimeOnly("org.hsqldb:hsqldb")
-    runtimeOnly("org.hsqldb:sqltool:${dependencyManagement.importedProperties["hsqldb.version"]}")
-    runtimeOnly("com.zaxxer:HikariCP")
+    runtime("org.springframework.data:spring-data-rest-hal-browser")
+    runtime("org.hsqldb:hsqldb")
+    runtime("org.hsqldb:sqltool:${dependencyManagement.importedProperties["hsqldb.version"]}")
+    runtime("com.zaxxer:HikariCP")
 }
 
 group = "hm.binkley.labs"
